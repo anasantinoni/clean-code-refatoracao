@@ -1,53 +1,39 @@
-<div align="center"> 
-  <img src="https://github.com/anasantinoni/ABP_SOLUCOES/blob/develop/front/assets/images/logo.png">
-  <h1>VisorCFC - Gestão simplificada do CFC</h1>
-  <p>Trabalho final da disciplina de Soluções Mobile do segundo semestre de 2024</p>
-</div>
+# VisorCFC – Gestão para Autoescolas
 
-<div>
-  <h2>Descrição do projeto:</h2>
-  <p>
-    O VisorCFC é uma Ferramenta de gestão para autoescolas, focado na administração dos alunos, financeiro e agenda diária de funcionários do CFC.
-  </p>
-</div>
-  <h2>Equipe:</h2>
-  <ul>
-    <li>
-      <a href="https://github.com/anasantinoni" target="_blank">Ana Júlia Santinoni</a>
-    </li>
-    <li>
-      <a href="https://github.com/Bruno01996" target="_blank">Bruno Rosso</a>
-    </li>
-    <li>
-      <a href="https://github.com/janainacarlos" target="_blank">Janaina Carlos</a>
-    </li>
-    <li>
-      <a href="https://github.com/laurasilveirag" target="_blank">Laura Silveira</a>
-    </li>
-     <li>
-      <a href="https://github.com/TheoGomide" target="_blank">Theo Gomide</a>
-    </li>
-  </ul>
-</div>
+## Integrantes
 
-<div style="display: inline_block">
-  <h2>Tecnologias que utilizadas nesse projeto:</h2>
-  <img align="center" title="React.js" alt="React" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg">
-  <img align="center" title="SQLite" alt="SQLite" height="30" width="40" src="https://w7.pngwing.com/pngs/1010/539/png-transparent-sqlite-logo-thumbnail-tech-companies-thumbnail.png">
+- Ana Júlia Santinoni
+- Janaina Carlos
+- Laura Gonçalves
 
-</div>
+## Descrição
 
-<div>
-  <h2>Apresentação do Projeto:</h2>
+Sistema de gestão para autoescolas, com funcionalidades de cadastro e gerenciamento de alunos, instrutores, funcionários e veículos, agendamento de aulas, controle financeiro e relatórios.
 
-[Apresentação slide](https://www.canva.com/design/DAGS2JQax2k/XFpU99vmZFfsTNlRfRVXFQ/edit?utm_content=DAGS2JQax2k&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+## Endereço do repositório
 
-</div>
+https://github.com/anasantinoni/ABP_SOLUCOES/tree/develop
 
-<div>
-  <h2>Executar o projeto:</h2>
-  <p>Caso não tenha instalado o SQLite:</p>
-  <pre>npm install sqlite3</pre>
-  <p>Em seguida:</p>
-  <pre>npx expo start</pre>
-</div>
+## Problemas identificados nos arquivos principais de código
+
+- Funções grandes e multifuncionais (`DetalhesAluno.jsx`, `Agenda.jsx`)
+- Repetição de lógicas, especialmente modais e validações
+- Nomenclaturas inconsistentes ou pouco descritivas
+- Tratamento de erros pouco estruturado
+- Comentário e código redundante
+- Ausência de testes automatizados
+- Baixa modularização
+
+## Estratégias de refatoração aplicadas
+
+- Separação de funções, utilitários e serviços
+- Padronização e internacionalização de nomes
+- Implementação de linter e formatter
+- Testes automatizados com Jest/React Testing Library
+- Documentação das mudanças via CHANGELOG.md
+
+## Execução
+
+1. Instalar dependências: `npm install`
+2. Executar: `npm start`
+3. Rodar testes: `npm test`
