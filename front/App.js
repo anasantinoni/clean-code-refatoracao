@@ -1,12 +1,10 @@
 import './gesture-handler';
 import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { PaperProvider } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
-import { SQLiteProvider } from 'expo-sqlite';
 
-import { initializeDatabase } from './database/initializeDatabase';
 import HomeScreen from './screens/HomeScreen';
 import FinanceiroAluno from './screens/FinanceiroAluno';
 import PesquisaAluno from './screens/PesquisaAluno';
@@ -34,53 +32,57 @@ const theme = {
 };
 
 export default function App() {
+  console.log('Aplicação carregada no ambiente web (mock ativo).');
+
   return (
-    <SQLiteProvider databaseName="myDatabase.db" onInit={initializeDatabase}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer>
-          <Drawer.Navigator initialRouteName="Login">
-            <Drawer.Screen name="Home" component={HomeScreen} />
-            <Drawer.Screen name="FinanceiroAluno" component={FinanceiroAluno} />
-            <Drawer.Screen name="PesquisaAluno" component={PesquisaAluno} />
-            <Drawer.Screen
-              options={{ drawerItemStyle: { display: 'none' } }}
-              name="DetalhesAluno"
-              component={DetalhesAluno}
-            />
-            <Drawer.Screen
-              options={{ drawerItemStyle: { display: 'none' } }}
-              name="CadastrarAluno"
-              component={CadastrarAluno}
-            />
-            <Drawer.Screen name="Agenda" component={Agenda} />
-            <Drawer.Screen
-              options={{
-                headerShown: false,
-                drawerItemStyle: { display: 'none' },
-              }}
-              name="Login"
-              component={Login}
-            />
-            <Drawer.Screen
-              options={{
-                headerShown: false,
-                drawerItemStyle: { display: 'none' },
-              }}
-              name="Registro"
-              component={Registro}
-            />
-          </Drawer.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    </SQLiteProvider>
+    <PaperProvider theme={theme}>
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName="Login">
+          <Drawer.Screen name="Home" component={HomeScreen} />
+          <Drawer.Screen name="FinanceiroAluno" component={FinanceiroAluno} />
+          <Drawer.Screen name="PesquisaAluno" component={PesquisaAluno} />
+          <Drawer.Screen
+            name="DetalhesAluno"
+            component={DetalhesAluno}
+            options={{ drawerItemStyle: { display: 'none' } }}
+          />
+          <Drawer.Screen
+            name="CadastrarAluno"
+            component={CadastrarAluno}
+            options={{ drawerItemStyle: { display: 'none' } }}
+          />
+          <Drawer.Screen name="Agenda" component={Agenda} />
+          <Drawer.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerShown: false,
+              drawerItemStyle: { display: 'none' },
+            }}
+          />
+          <Drawer.Screen
+            name="Registro"
+            component={Registro}
+            options={{
+              headerShown: false,
+              drawerItemStyle: { display: 'none' },
+            }}
+          />
+        </Drawer.Navigator>
+
+        {/* Placeholder para confirmar carregamento na web (visibilidade) */}
+        <View style={styles.centerContent}>
+          <Text>Expo Web!</Text>
+        </View>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  centerContent: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
 });
