@@ -59,3 +59,75 @@ Essa mudança faz parte da refatoração com foco nos princípios de **Clean Cod
 - Legibilidade e clareza do código;
 - Compatibilidade entre ambientes;
 - Redução de dependências complexas e pouco portáveis.
+
+## Testes Implementados
+
+Para garantir a estabilidade do sistema após a refatoração, foi implementada uma suíte de testes unitários com Jest e React Testing Library.
+
+### 2.1. `CadastrarAluno.test.jsx` ,
+* **13 testes** organizados em 4 grupos:
+    * Renderização de componentes
+    * Validações de campos
+    * Cadastro de aluno
+    * Integração com banco de dados 
+* **Cobertura:** 
+
+### 2.2. `PesquisaAluno.test.jsx` ,
+* **7 testes** organizados em 4 grupos:
+    * Renderização inicial
+    * Busca de alunos
+    * Navegação para detalhes
+    * Tratamento de erros
+* **Cobertura:** 
+
+### 2.3. `DetalhesAluno.test.jsx` ,
+* **8 testes** cobrindo CRUD completo:
+    * Carregamento de parcelas
+    * Adicionar parcela
+    * Editar parcela
+    * Excluir parcela
+* **Cobertura:** 
+
+### 2.4. `Agenda.test.jsx` 
+* **6 testes** de agendamento.
+* **Cobertura:** 
+
+### 2.5. `FinanceiroAluno.test.jsx` 
+* **5 testes** de relatórios.
+* **Cobertura:** 
+
+### 2.6. Utilitários (`validators.test.js`)
+* **12 testes** para validações:
+    * validarCPF (com e sem máscara)
+    * validarCelular
+    * validarEmail
+    * validarData
+* **Cobertura:** 
+
+## Sugestão de Interface Fluente
+
+O objetivo desta abordagem é melhorar a legibilidade e a manutenção das operações de acesso a dados. Uma interface fluente permite que métodos sejam encadeados de forma lógica e expressiva, alinhando-se aos princípios do Clean Code ao tornar o código mais claro e próximo da linguagem de domínio (como "buscar tabela X, onde a condição Y, e atualizar com Z").
+
+A sugestão consiste em criar uma camada de abstração para as consultas, substituindo queries manuais por uma sintaxe mais limpa.
+
+## Exemplo da Estrutura Sugerida
+
+O objetivo desta abordagem é melhorar a legibilidade e a manutenção das operações de acesso a dados. Uma interface fluente permite que métodos sejam encadeados de forma lógica e expressiva, alinhando-se aos princípios do Clean Code ao tornar o código mais claro e próximo da linguagem de domínio (como "buscar tabela X, onde a condição Y, e atualizar com Z").
+
+A sugestão consiste em criar uma camada de abstração para as consultas, substituindo queries manuais por uma sintaxe mais limpa
+
+Em vez de escrever queries SQL complexas como strings (como seria no SQLite original):
+
+```sql
+db.executeSql("UPDATE alunos SET nome = ?, status = ? WHERE id = ?", ["Novo Nome", "ativo", 1]);
+```
+
+A interface fluente permitiria uma sintaxe encadeada e muito mais legível:
+```javascript
+db.table("alunos")
+ .where("id", "=", 1)
+ .update({
+ nome: "Novo Nome",
+ status: "ativo"
+ });
+```
