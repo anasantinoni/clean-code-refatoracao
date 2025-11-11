@@ -1,17 +1,19 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-export default function Input({ label, value, onChangeText, placeholder, keyboardType }) {
+// Adicionei prop 'editable' para consistência
+export default function CustomInput({ label, value, onChangeText, placeholder, keyboardType, style, editable = true }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
-        style={styles.input}
+        style={[styles.input, !editable && styles.uneditableInput]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor="#A8C8E0"
         keyboardType={keyboardType || 'default'}
+        editable={editable}
       />
     </View>
   );
@@ -20,6 +22,7 @@ export default function Input({ label, value, onChangeText, placeholder, keyboar
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
+    width: '100%',
   },
   label: {
     fontSize: 14,
@@ -37,4 +40,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     color: '#2C2F33',
   },
+  uneditableInput: {
+      backgroundColor: '#E0E0E0',
+      color: '#555',
+  }
 });

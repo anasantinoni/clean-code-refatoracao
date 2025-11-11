@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-export default function Card({ title, description, onPress }) {
+export default function CustomCard({ title, description, onPress }) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
       <Text style={styles.title}>{title}</Text>

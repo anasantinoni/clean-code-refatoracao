@@ -1,68 +1,58 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import Button from "../components/Button";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
+import Button from "../components/CustomButton"; 
 import { logout, verifyAuth } from "../actions/auth";
+import { useNavigation } from "@react-navigation/native"; 
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
+  const navigation = useNavigation();
+  
+  // Lógica de Logout isolada (SRP)
+  const handleLogout = () => {
+    logout();
+    navigation.navigate("Login");
+  };
 
+  // Lógica de verificação de autenticação inicial
   useEffect(() => {
     const isAuth = verifyAuth();
     if (!isAuth) {
       navigation.navigate("Login");
     }
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      {/* Título de boas-vindas */}
-      <Text style={styles.title}>Bem-vindo!</Text>
-      {/* Botões */}
-      <View style={styles.buttonContainer}>
+      
+      <Text style={styles.title}>Menu Principal</Text> 
+      
+      <ScrollView contentContainerStyle={styles.mainContentContainer}>
         <Button
           title="Alunos"
           icon="person"
-          onPress={() => navigation.navigate("PesquisaAluno")}
+          onPress={() => navigation.navigate("StudentSearchScreen")} 
           style={styles.button}
         />
         <Button
           title="Financeiro"
           icon="attach-money"
-          onPress={() => navigation.navigate("FinanceiroAluno")}
+          onPress={() => navigation.navigate("FinancialReportScreen")} 
           style={styles.button}
         />
         <Button
           title="Agenda"
           icon="event"
-          onPress={() => navigation.navigate("Agenda")}
+          onPress={() => navigation.navigate("ScheduleScreen")}
           style={styles.button}
         />
-      </View>
-      <View style={{
-        position: "absolute",
-        bottom: 10,
-        width: "100%",
-        alignItems: "center",
-      }}>
+      </ScrollView>
+      
+      <View style={styles.logoutContainer}>
         <Button
           title="Sair"
           icon="exit-to-app"
-          onPress={() => {
-            logout();
-            navigation.navigate("Login");
-          }}
-          style={{
-            width: "30%",
-            height: 50,
-            backgroundColor: "#ff0000", // Vermelho da paleta
-            borderRadius: 12,
-            justifyContent: "center",
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
-            shadowRadius: 4,
-            elevation: 3,
-          }}
+          onPress={handleLogout}
+          style={styles.logoutButton}
         />
       </View>
     </View>
@@ -73,8 +63,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F4F4F4",
-    alignItems: "center",
-    justifyContent: "center",
     padding: 20,
   },
   title: {
@@ -85,23 +73,38 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat",
     textAlign: "center",
   },
-  buttonContainer: {
+  mainContentContainer: {
     width: "100%",
     alignItems: "center",
-    justifyContent: "space-between",
+    paddingBottom: 100,
   },
   button: {
     marginVertical: 15,
     width: "90%",
-    height: 50,
-    backgroundColor: "#0056B3", // Azul da paleta
+    height: 60,
+    backgroundColor: "#0056B3",
     borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
+  },
+  logoutContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 20,
+    alignItems: "center",
+    backgroundColor: '#F4F4F4',
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+  },
+  logoutButton: {
+    width: "90%", 
+    height: 60,
+    backgroundColor: "#D32F2F", 
+    borderRadius: 12,
   },
 });

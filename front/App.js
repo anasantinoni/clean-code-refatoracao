@@ -1,18 +1,17 @@
 import './gesture-handler';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { PaperProvider } from 'react-native-paper';
 
 import HomeScreen from './screens/HomeScreen';
-import FinanceiroAluno from './screens/FinanceiroAluno';
-import PesquisaAluno from './screens/PesquisaAluno';
-import DetalhesAluno from './screens/DetalhesAluno';
-import CadastrarAluno from './screens/CadastrarAluno';
-import Agenda from './screens/Agenda';
+import FinanceiroAluno from './screens/FinancialReportScreen';
+import PesquisaAluno from './screens/StudentSearchScreen';
+import DetalhesAluno from './screens/StudentDetailsScreen';
+import CadastrarAluno from './screens/StudentRegistrationScreen';
+import Agenda from './screens/ScheduleScreen';
 import Login from './screens/Login';
-import Registro from './screens/Registro';
+import Registro from './screens/RegisterScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -39,19 +38,22 @@ export default function App() {
       <NavigationContainer>
         <Drawer.Navigator initialRouteName="Login">
           <Drawer.Screen name="Home" component={HomeScreen} />
-          <Drawer.Screen name="FinanceiroAluno" component={FinanceiroAluno} />
-          <Drawer.Screen name="PesquisaAluno" component={PesquisaAluno} />
+          
+          <Drawer.Screen name="FinancialReportScreen" component={FinanceiroAluno} />
+          <Drawer.Screen name="StudentSearchScreen" component={PesquisaAluno} />
+          
           <Drawer.Screen
-            name="DetalhesAluno"
+            name="StudentDetailsScreen"
             component={DetalhesAluno}
             options={{ drawerItemStyle: { display: 'none' } }}
           />
           <Drawer.Screen
-            name="CadastrarAluno"
+            name="StudentRegistrationScreen"
             component={CadastrarAluno}
             options={{ drawerItemStyle: { display: 'none' } }}
           />
-          <Drawer.Screen name="Agenda" component={Agenda} />
+          <Drawer.Screen name="ScheduleScreen" component={Agenda} />
+          
           <Drawer.Screen
             name="Login"
             component={Login}
@@ -61,7 +63,7 @@ export default function App() {
             }}
           />
           <Drawer.Screen
-            name="Registro"
+            name="RegisterScreen"
             component={Registro}
             options={{
               headerShown: false,
@@ -70,19 +72,7 @@ export default function App() {
           />
         </Drawer.Navigator>
 
-        {/* Placeholder para confirmar carregamento na web (visibilidade) */}
-        <View style={styles.centerContent}>
-          <Text>Expo Web!</Text>
-        </View>
       </NavigationContainer>
     </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  centerContent: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

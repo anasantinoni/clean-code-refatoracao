@@ -1,63 +1,59 @@
-import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { useEffect } from "react";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { registerUser } from "../actions/auth";
+import { useAuthManagement } from "../hooks/useAuthManagement";
 
-
-export default function Registro() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+export default function RegisterScreen() {
   const navigation = useNavigation();
-
-
-  const handleRegister = async () => {
-    try {
-      setLoading(true);
-      await registerUser(email, password);
-      navigation.navigate("Login");
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        alert("Este email já está em uso");
-      } else {
-        alert("Ocorreu um erro ao registrar o usuário");
-      }
-    } finally {
-      setLoading(false);
+  
+  const { 
+    email, 
+    setEmail, 
+    password, 
+    setPassword, 
+    loading, 
+    error, 
+    handleRegister 
+  } = useAuthManagement(navigation);
+  
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Erro de Registro", error);
     }
-  };
+  }, [error]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Registro</Text>
+      <Text style={styles.title}>Register</Text>
       <TextInput
         value={email}
         label="Email"
         mode="outlined"
         style={styles.input}
         onChangeText={setEmail}
+        keyboardType="email-address"
       />
       <TextInput
         value={password}
-        label="senha"
+        label="Senha" 
         mode="outlined"
         onChangeText={setPassword}
         secureTextEntry
         style={styles.input}
       />
       <Button
-        onPress={() => handleRegister()}
-        title="Registro"
+        onPress={handleRegister}
         loading={loading}
         mode="contained-tonal"
         buttonColor="#0056B3"
         textColor="#FFFFFF"
+        disabled={loading}
       >
-        Registro
+        Register
       </Button>
       <Text style={{ marginTop: 15 }}>
-        Já tem uma conta?{" "}
+        Already have an account?{" "}
         <Text
           style={styles.link}
           onPress={() => navigation.navigate("Login")}

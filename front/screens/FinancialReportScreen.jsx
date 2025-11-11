@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,57 +8,37 @@ import {
 } from "react-native";
 import { PieChart } from "react-native-chart-kit";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useDatabase } from "../database/useDatabase";
+import { useFinancialReport } from "../hooks/useFinancialReport"; 
 
-export default function FinanceiroAluno() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+export default function FinancialReportScreen() { 
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
-  const [financeiros, setFinanceiros] = useState([]);
+  
+  const {
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    totalReceivable,
+    totalPayable,
+  } = useFinancialReport();
 
-  const { getFinanceiros } = useDatabase();
-
-  useEffect(() => {
-    carregarDadosFinanceiros();
-  }, [startDate, endDate]);
-
-  const carregarDadosFinanceiros = async () => {
-    try {
-      const start = startDate.toISOString().split("T")[0];
-      const end = endDate.toISOString().split("T")[0];
-      const response = await getFinanceiros({ startDate: start, endDate: end });
-      setFinanceiros(response);
-    } catch (error) {
-      console.error("Erro ao carregar dados financeiros:", error);
-    }
+  const handleDateChange = (setter, setShow) => (_, selected) => {
+    setShow(false);
+    if (selected) setter(selected);
   };
-
-  const calcularTotais = () => {
-    let totalReceber = 0;
-    let totalPagar = 0;
-
-    financeiros.forEach((item) => {
-      if (item.status === 1) totalReceber += item.valor; // Status 1: A Receber
-      if (item.status === 2) totalPagar += item.valor; // Status 2: A Pagar
-    });
-
-    return { totalReceber, totalPagar };
-  };
-
-  const { totalReceber, totalPagar } = calcularTotais();
-
-  const dataGrafico = [
+  
+const chartData = [
     {
-      name: "A Receber",
-      amount: totalReceber,
+      name: "A Receber", 
+      amount: totalReceivable,
       color: "#4CAF50",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
     {
-      name: "A Pagar",
-      amount: totalPagar,
+      name: "A Pagar", 
+      amount: totalPayable,
       color: "#F44336",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
@@ -67,7 +47,7 @@ export default function FinanceiroAluno() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Financeiro</Text>
+      <Text style={styles.title}>Relatório Financeiro</Text> 
 
       <View style={styles.datePickerContainer}>
         <Pressable
@@ -82,7 +62,7 @@ export default function FinanceiroAluno() {
             })}
           </Text>
         </Pressable>
-        <Text style={styles.dateSeparator}>até</Text>
+        <Text style={styles.dateSeparator}>até</Text> 
         <Pressable
           onPress={() => setShowEndPicker(true)}
           style={styles.dateInput}
@@ -102,10 +82,7 @@ export default function FinanceiroAluno() {
           value={startDate}
           mode="date"
           display="default"
-          onChange={(event, selected) => {
-            setShowStartPicker(false);
-            if (selected) setStartDate(selected);
-          }}
+          onChange={handleDateChange(setStartDate, setShowStartPicker)}
         />
       )}
       {showEndPicker && (
@@ -113,17 +90,14 @@ export default function FinanceiroAluno() {
           value={endDate}
           mode="date"
           display="default"
-          onChange={(event, selected) => {
-            setShowEndPicker(false);
-            if (selected) setEndDate(selected);
-          }}
+          onChange={handleDateChange(setEndDate, setShowEndPicker)}
         />
       )}
 
       <ScrollView>
         <View style={styles.chartContainer}>
           <PieChart
-            data={dataGrafico}
+            data={chartData}
             width={300}
             height={220}
             chartConfig={{
@@ -141,12 +115,12 @@ export default function FinanceiroAluno() {
 
         <View style={styles.totalContainer}>
           <View style={styles.totalCard}>
-            <Text style={styles.totalTitle}>Total a Receber</Text>
-            <Text style={styles.totalValue}>R$ {totalReceber.toFixed(2)}</Text>
+            <Text style={styles.totalTitle}>Total a Receber</Text> 
+            <Text style={styles.totalValue}>R$ {totalReceivable.toFixed(2)}</Text>
           </View>
           <View style={styles.totalCard}>
-            <Text style={styles.totalTitle}>Total a Pagar</Text>
-            <Text style={styles.totalValue}>R$ {totalPagar.toFixed(2)}</Text>
+            <Text style={styles.totalTitle}>Total a Pagar</Text> 
+            <Text style={styles.totalValue}>R$ {totalPayable.toFixed(2)}</Text>
           </View>
         </View>
       </ScrollView>

@@ -7,36 +7,54 @@ Segue o padrão Keep a Changelog: https://keepachangelog.com/pt-BR/1.0.0/
 
 ### Added
 
-- ESLint e Prettier para padronização do código
-- Primeiros testes unitários (Jest + React Testing Library)
-- Mensagens de erro visuais para o usuário
-- Documento detalhado dos principais problemas encontrados nos arquivos de código
-- Definição do plano de refatoração aplicado em VisorCFC
-- Suporte completo à execução via `Expo Web` com dados mockados, removendo necessidade de ambiente Android/iOS
-- Adicionado `.gitignore`
+- **Ferramentas de Qualidade:** Adicionado ESLint, Prettier e `.gitignore` para padronização de código.
+- **Testes:** Adicionados primeiros testes unitários (Jest + React Testing Library) e documento de análise de problemas.
+- **Mock de Dados:** Suporte completo à execução via `Expo Web` com dados mockados (removendo `expo-sqlite`).
+- **Custom Hooks (SRP):** Adicionados Hooks para isolar a lógica de negócio das telas:
+  - `useFinancialManagement.js` (Detalhes do Aluno)
+  - `useAgendaManagement.js` (Agenda)
+  - `useAuthManagement.js` (Login/Registro)
+  - `useFinancialReport.js` (Relatório Financeiro)
+  - `useStudentSearch.js` (Busca de Aluno)
+  - `useStudentRegistration.js` (Cadastro de Aluno)
+- **Componentes de UI (Modularização):**
+  - `InstallmentModal.jsx` (Modal de Parcelas)
+  - `AppointmentModalContent.jsx` (Modal de Agendamento)
+- **Tratamento de Erros:** Adicionado `AUTH_ERROR_MESSAGES` no Hook de autenticação para feedback claro ao usuário
+- **TypeScript (auth.ts):** Adicionadas interfaces `MockUser`, `AuthSession` e enum `AuthErrorCode` para garantir tipagem forte no serviço de autenticação
+- **TypeScript (auth.ts):** Adicionada classe `AuthError` e helper `createAuthError` para centralizar a lógica de erros (DRY)
 
 ### Changed
 
-- Refatoração das funções longas e multifuncionais em `DetalhesAluno.jsx` e `Agenda.jsx`
-- Centralização das validações e manipulação do banco de dados em arquivos utilitários (`utils/`)
-- Padronização dos nomes das variáveis e funções para inglês técnico
-- Melhoria no feedback de erros (visibilidade ao usuário)
-- Estrutura de pastas reorganizada
-- Substituição do acesso a banco de dados local por dados simulados em memória (mock)
-- Autenticação agora utiliza dados de login simulados localmente (mock), substituindo a dependência de serviços externos
-- Mantida a navegação e fluxo de login originais para preservar a experiência do usuário
-- Simplificação da estrutura de execução (scripts)
-- Otimização do arquivo package.json, garantindo apenas dependências realmente utilizadas no código
-- Redução do tamanho do projeto e melhoria na legibilidade e manutenção geral
+- **Refatoração Profunda (SRP):** Todas as telas principais foram refatoradas para usar Custom Hooks, focando apenas na UI:
+  - `DetalhesAluno.jsx` -> `StudentDetailsScreen.jsx`
+  - `Agenda.jsx` -> `ScheduleScreen.jsx`
+  - `FinanceiroAluno.jsx` -> `FinancialReportScreen.jsx`
+  - `CadastrarAluno.jsx` -> `StudentRegistrationScreen.jsx`
+  - `PesquisaAluno.jsx` -> `StudentSearchScreen.jsx`
+  - `Login.jsx`
+  - `Registro.jsx` -> `RegisterScreen.jsx`
+  - `HomeScreen.jsx`
+- **Padronização (Nomenclatura):**
+  - Nomes de arquivos, funções e variáveis-chave padronizados para inglês técnico (ex: `carregarParcelas` -> `loadInstallments`).
+  - Nomes das Rotas no `App.js` foram padronizados para bater com os nomes dos componentes (ex: `name="FinancialReportScreen"`).
+- **Componentes de UI:**
+  - `Button.js`, `Input.js`, `Card.js`, `DateInput.js` refatorados para `CustomButton`, `CustomInput`, etc.
+  - Adicionadas props de estado (`disabled`, `loading`, `editable`) nos componentes de UI para melhor UX e Clean Code.
+- **Formulários:** O `StudentRegistrationScreen` (antigo CadastrarAluno) teve 11 `useStates` consolidados em um único objeto de estado no Hook.
+- **Autenticação:** Substituída a dependência de serviços externos (Firebase) por dados simulados localmente (mock).
 
 ### Fixed
 
-- Correção de bugs na manipulação de modais e agendamento de aulas
+- **Code Smells (Linting):**
+  - Corrigidos avisos de variáveis não utilizadas (ex: `event` no `DateTimePicker`) usando `_` (underscore).
+  - Removidas importações não utilizadas (ex: `StyleSheet` no `InstallmentModal`, `DatePickerInput` no `ScheduleScreen`).
+  - Removidos *code smells* de JSX (ex: `{}` vazias no `Login.jsx`).
 
 ### Removed
 
-- Código comentado e trechos redundantes
-- Remoção do módulo `expo-sqlite`
-- Função `initializeDatabase`
-- Integração com Firebase Authentication (ou outros provedores externos de login)
-- Chamadas e dependências de autenticação remota, garantindo compatibilidade completa com a execução em ambiente web/localhost
+- **Código Morto (Dead Code):**
+  - Removidos `StyleSheet` e `View`/`Text` não utilizados do `App.js`.
+- **Dependências:**
+  - Remoção do módulo `expo-sqlite` e integração com Firebase Auth.
+  - Otimização do `package.json` para remover dependências não utilizadas.
